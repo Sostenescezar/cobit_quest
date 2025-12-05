@@ -1,0 +1,71 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-image: url('/img/olindadofuturo.jpg'); /* Usando a imagem de fundo fornecida */
+    background-size: cover;
+    background-position: center;
+}
+
+.container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: inherit;
+    background-size: inherit;
+    background-position: inherit;
+    filter: blur(5px); /* Desfoque no fundo */
+    z-index: -1; /* Coloca o desfoque atrás do conteúdo */
+}
+
+.menu {
+    text-align: center;
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+}
+
+.title {
+    font-size: 80px;
+    font-weight: bold;
+    letter-spacing: 7px;
+    text-transform: uppercase;
+    color: #322222;
+}
+
+.options {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.option {
+    background-color: transparent;
+    border: none;
+    font-weight: 900;
+    color: white;
+    padding: 15px 30px;
+    margin: 10px;
+    font-size: 30px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 400px;
+}
