@@ -99,6 +99,10 @@ const questionText = document.getElementById('question-text');
 const answersContainer = document.getElementById('answers-container');
 const winnerText = document.getElementById('winner-text');
 
+const feedbackOverlay = document.getElementById('feedback-overlay');
+const feedbackText = document.getElementById('feedback-text');
+const feedbackIcon = document.getElementById('feedback-icon');
+
 const container = document.querySelector('.container');
 
 // Init
@@ -166,9 +170,7 @@ function startGame() {
     gameState.questionsAnswered = 0;
     gameState.currentTurn = 1; // Team 1 starts
     
-    // Prepare questions (Shuffle all questions to randomize order, or keep them split?)
-    // Request says "each team has 20 questions". Let's shuffle the whole pool but ensure we alternate.
-    // Or better: keep a single pool of 40 and pop them.
+    // Shuffle pool
     shuffle(questions);
     
     gameArea.classList.remove('hidden');
@@ -199,41 +201,67 @@ function loadQuestion() {
     questionText.innerText = q.q;
     
     // Create answer buttons with indices to track correct one
-    // We need to shuffle answers so the first one isn't always correct (my data has correct at 0)
     let answerIndices = [0, 1, 2, 3];
     shuffle(answerIndices);
     
     answersContainer.innerHTML = '';
     
+    // Kahoot colors and shapes
     const colorClasses = ['btn-red', 'btn-blue', 'btn-yellow', 'btn-green'];
+    const shapeClasses = ['shape-triangle', 'shape-diamond', 'shape-circle', 'shape-square'];
     
     answerIndices.forEach((index, i) => {
         const btn = document.createElement('button');
-        btn.classList.add('answer-btn', colorClasses[i]); // Apply color class based on position
-        btn.innerText = q.a[index];
+        btn.classList.add('answer-btn', colorClasses[i]);
+        
+        // Shape HTML
+        const shape = document.createElement('div');
+        shape.className = `shape ${shapeClasses[i]}`;
+        
+        // Text Span
+        const text = document.createElement('span');
+        text.className = 'answer-text';
+        text.innerText = q.a[index];
+        
+        btn.appendChild(shape);
+        btn.appendChild(text);
+        
         btn.addEventListener('click', () => handleAnswer(index, q.correct));
         answersContainer.appendChild(btn);
     });
 }
 
 function handleAnswer(selectedIndex, correctIndex) {
-    if (selectedIndex === correctIndex) {
-        // Correct!
+    const isCorrect = selectedIndex === correctIndex;
+    
+    // Show Feedback Overlay
+    feedbackOverlay.classList.remove('hidden');
+    feedbackOverlay.classList.remove('feedback-correct', 'feedback-wrong');
+    
+    if (isCorrect) {
+        feedbackOverlay.classList.add('feedback-correct');
+        feedbackText.innerText = "Correto!";
+        feedbackIcon.innerText = "✔";
+        
         if (gameState.currentTurn === 1) {
-            gameState.team1.score++;
+            gameState.team1.score += 100; // Kahoot style score
         } else {
-            gameState.team2.score++;
+            gameState.team2.score += 100;
         }
-        alert("Correto!");
     } else {
-        alert("Errado!");
+        feedbackOverlay.classList.add('feedback-wrong');
+        feedbackText.innerText = "Errado!";
+        feedbackIcon.innerText = "✖";
     }
     
-    gameState.questionsAnswered++;
-    gameState.currentTurn = gameState.currentTurn === 1 ? 2 : 1; // Switch turn
-    
-    updateUI();
-    loadQuestion();
+    // Wait then proceed
+    setTimeout(() => {
+        feedbackOverlay.classList.add('hidden');
+        gameState.questionsAnswered++;
+        gameState.currentTurn = gameState.currentTurn === 1 ? 2 : 1;
+        updateUI();
+        loadQuestion();
+    }, 2000);
 }
 
 function endGame() {
