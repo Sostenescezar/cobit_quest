@@ -99,7 +99,7 @@ const team2ScoreDisplay = document.getElementById('team2-score-display');
 const turnIndicator = document.getElementById('turn-indicator');
 const questionText = document.getElementById('question-text');
 const answersContainer = document.getElementById('answers-container');
-const winnerText = document.getElementById('winner-text');
+const winnerText = document.getElementById('winnerText');
 const questionCounter = document.getElementById('question-counter'); // New element
 
 const timerDisplay = document.getElementById('timer-display');
@@ -276,7 +276,8 @@ function handleTimeOut() {
             check.style.marginLeft = "10px";
             btn.appendChild(check);
         } else {
-            btn.classList.add('wrong-answer');
+            // All incorrect answers turn red and are dimmed if not selected by user
+            btn.classList.add('unselected-wrong-answer'); 
             const x = document.createElement('span');
             x.innerText = " ✖";
             x.style.fontSize = "30px";
@@ -290,7 +291,7 @@ function handleTimeOut() {
         gameState.currentTurn = gameState.currentTurn === 1 ? 2 : 1;
         updateUI();
         loadQuestion();
-    }, 4000);
+    }, 4000); // Increased delay to 4 seconds
 }
 
 function handleAnswer(clickedBtn, selectedIndex, correctIndex) {
@@ -314,40 +315,39 @@ function handleAnswer(clickedBtn, selectedIndex, correctIndex) {
         
         const index = parseInt(btn.dataset.originalIndex);
         
+        // Create spans for icon and points
+        const feedbackContainer = document.createElement('span'); // Container for icon only now
+        feedbackContainer.style.marginLeft = 'auto'; // Push to the right
+        
+        const pointsSpan = document.createElement('span');
+        pointsSpan.style.fontSize = "20px";
+        pointsSpan.style.fontWeight = "bold";
+        pointsSpan.style.marginRight = "15px"; // Space after points (since it's on left now)
+        pointsSpan.classList.add('feedback-points'); 
+
+        const iconSpan = document.createElement('span');
+        iconSpan.style.fontSize = "30px";
+        
         if (index === correctIndex) {
             btn.classList.add('correct-answer');
-            const check = document.createElement('span');
-            check.innerText = " ✔";
-            check.style.fontSize = "30px";
-            check.style.marginLeft = "10px";
-            btn.appendChild(check);
-
-            if (btn === clickedBtn) { 
-                const pointsDisplay = document.createElement('span');
-                pointsDisplay.innerText = ` +${points}`;
-                pointsDisplay.style.fontSize = "20px";
-                pointsDisplay.style.marginLeft = "10px";
-                pointsDisplay.style.fontWeight = "bold";
-                btn.appendChild(pointsDisplay);
-            }
-
-        } else {
-            btn.classList.add('wrong-answer'); 
-            const x = document.createElement('span');
-            x.innerText = " ✖";
-            x.style.fontSize = "30px";
-            x.style.marginLeft = "10px";
-            btn.appendChild(x);
+            iconSpan.innerText = " ✔";
             
-            if (btn === clickedBtn) {
-                 const pointsDisplay = document.createElement('span');
-                pointsDisplay.innerText = ` +0`;
-                pointsDisplay.style.fontSize = "20px";
-                pointsDisplay.style.marginLeft = "10px";
-                pointsDisplay.style.fontWeight = "bold";
-                btn.appendChild(pointsDisplay);
+            if (btn === clickedBtn) { 
+                pointsSpan.innerText = `+${points}`;
+                btn.insertBefore(pointsSpan, btn.firstChild); // Insert points at the very beginning (left)
+            }
+        } else { 
+            if (btn === clickedBtn) { 
+                btn.classList.add('wrong-answer');
+                iconSpan.innerText = " ✖";
+                pointsSpan.innerText = `+0`;
+                btn.insertBefore(pointsSpan, btn.firstChild); // Insert points at the very beginning (left)
+            } else { 
+                btn.classList.add('unselected-wrong-answer');
             }
         }
+        feedbackContainer.appendChild(iconSpan);
+        btn.appendChild(feedbackContainer);
     });
     
     updateUI(points); // Pass points to show animation
@@ -355,7 +355,7 @@ function handleAnswer(clickedBtn, selectedIndex, correctIndex) {
     setTimeout(() => {
         gameState.questionsAnswered++;
         gameState.currentTurn = gameState.currentTurn === 1 ? 2 : 1;
-        updateUI(); // Clear animation
+        updateUI(); // Clear animation (by calling with default addedPoints=0)
         loadQuestion();
     }, 4000);
 }
