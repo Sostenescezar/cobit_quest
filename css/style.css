@@ -180,16 +180,16 @@ input[type="text"] {
     position: absolute;
     top: 15px;
     left: 15px;
-    width: 50px; /* Match timer width */
-    height: 50px; /* Match timer height */
-    background-color: #660099; /* Kahoot purple-ish */
+    width: 70px; /* Increased width */
+    height: 70px; /* Increased height */
+    background-color: #660099;
     color: white;
-    border-radius: 50%; /* Make it round */
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 24px; /* Match timer font size */
-    border: 2px solid white; /* Match timer border */
+    font-size: 24px;
+    border: 2px solid white;
     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     z-index: 10;
 }

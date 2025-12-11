@@ -176,9 +176,22 @@ function startGame() {
     loadQuestion();
 }
 
-function updateUI() {
-    team1ScoreDisplay.innerText = `${gameState.team1.name}: ${gameState.team1.score}`;
-    team2ScoreDisplay.innerText = `${gameState.team2.name}: ${gameState.team2.score}`;
+function updateUI(addedPoints = 0) {
+    let t1Text = `${gameState.team1.name}: ${gameState.team1.score}`;
+    let t2Text = `${gameState.team2.name}: ${gameState.team2.score}`;
+    
+    // Add animation text if points were added
+    if (addedPoints > 0) {
+        if (gameState.currentTurn === 1) {
+            t1Text += ` (+${addedPoints})`;
+        } else {
+            t2Text += ` (+${addedPoints})`;
+        }
+    }
+
+    team1ScoreDisplay.innerText = t1Text;
+    team2ScoreDisplay.innerText = t2Text;
+    
     const currentName = gameState.currentTurn === 1 ? gameState.team1.name : gameState.team2.name;
     turnIndicator.innerText = `Vez de: ${currentName}`;
     
@@ -196,10 +209,6 @@ function loadQuestion() {
     }
 
     // Update Counter
-    // Since total is 40 (20 per team), but prompt says "show question number for each team", e.g., 2/20
-    // We can calculate current question per team.
-    // questionsAnswered increases by 1 each time.
-    // Team 1 plays on even indices (0, 2, 4...) if starting first? No, turn alternates.
     const teamQuestionsAnswered = Math.floor(gameState.questionsAnswered / 2) + 1;
     questionCounter.innerText = `${teamQuestionsAnswered}/20`;
 
@@ -256,7 +265,6 @@ function handleTimeOut() {
     const q = questions[gameState.questionsAnswered];
     
     buttons.forEach(btn => {
-        // Disable clicks
         btn.style.pointerEvents = 'none';
 
         const index = parseInt(btn.dataset.originalIndex);
@@ -268,7 +276,7 @@ function handleTimeOut() {
             check.style.marginLeft = "10px";
             btn.appendChild(check);
         } else {
-            btn.classList.add('wrong-answer'); // All incorrect answers turn red
+            btn.classList.add('wrong-answer');
             const x = document.createElement('span');
             x.innerText = " ✖";
             x.style.fontSize = "30px";
@@ -282,7 +290,7 @@ function handleTimeOut() {
         gameState.currentTurn = gameState.currentTurn === 1 ? 2 : 1;
         updateUI();
         loadQuestion();
-    }, 4000); // Increased delay to 4 seconds
+    }, 4000);
 }
 
 function handleAnswer(clickedBtn, selectedIndex, correctIndex) {
@@ -290,9 +298,18 @@ function handleAnswer(clickedBtn, selectedIndex, correctIndex) {
     
     const isCorrect = selectedIndex === correctIndex;
     const buttons = answersContainer.querySelectorAll('.answer-btn');
+    let points = 0;
+
+    if (isCorrect) {
+        points = Math.floor((gameState.timeLeft / 60) * 1000);
+        if (gameState.currentTurn === 1) {
+            gameState.team1.score += points;
+        } else {
+            gameState.team2.score += points;
+        }
+    }
     
     buttons.forEach(btn => {
-        // Disable clicks
         btn.style.pointerEvents = 'none';
         
         const index = parseInt(btn.dataset.originalIndex);
@@ -304,33 +321,43 @@ function handleAnswer(clickedBtn, selectedIndex, correctIndex) {
             check.style.fontSize = "30px";
             check.style.marginLeft = "10px";
             btn.appendChild(check);
+
+            if (btn === clickedBtn) { 
+                const pointsDisplay = document.createElement('span');
+                pointsDisplay.innerText = ` +${points}`;
+                pointsDisplay.style.fontSize = "20px";
+                pointsDisplay.style.marginLeft = "10px";
+                pointsDisplay.style.fontWeight = "bold";
+                btn.appendChild(pointsDisplay);
+            }
+
         } else {
-            btn.classList.add('wrong-answer'); // All incorrect answers turn red
+            btn.classList.add('wrong-answer'); 
             const x = document.createElement('span');
             x.innerText = " ✖";
             x.style.fontSize = "30px";
             x.style.marginLeft = "10px";
             btn.appendChild(x);
+            
+            if (btn === clickedBtn) {
+                 const pointsDisplay = document.createElement('span');
+                pointsDisplay.innerText = ` +0`;
+                pointsDisplay.style.fontSize = "20px";
+                pointsDisplay.style.marginLeft = "10px";
+                pointsDisplay.style.fontWeight = "bold";
+                btn.appendChild(pointsDisplay);
+            }
         }
     });
     
-    if (isCorrect) {
-        // Calculate Score
-        const points = Math.floor((gameState.timeLeft / 60) * 1000);
-        if (gameState.currentTurn === 1) {
-            gameState.team1.score += points;
-        } else {
-            gameState.team2.score += points;
-        }
-    }
+    updateUI(points); // Pass points to show animation
     
-    // Wait then proceed
     setTimeout(() => {
         gameState.questionsAnswered++;
         gameState.currentTurn = gameState.currentTurn === 1 ? 2 : 1;
-        updateUI();
+        updateUI(); // Clear animation
         loadQuestion();
-    }, 4000); // Increased delay to 4 seconds
+    }, 4000);
 }
 
 function endGame() {
