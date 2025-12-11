@@ -74,15 +74,13 @@ body, html {
 }
 
 .option {
-    position: relative;
-    top: 30px;
     background-color: transparent; /* No background */
     border: none;
     font-weight: 900; /* Extra bold */
     color: #fff; /* White text */
     padding: 10px 20px;
     margin: 15px;
-    font-size: 40px; /* Larger font */
+    font-size: 48px; /* Larger font */
     cursor: pointer;
     transition: transform 0.3s ease, text-shadow 0.3s ease, color 0.3s ease;
     width: auto; /* Auto width */
@@ -103,20 +101,63 @@ body, html {
     text-shadow: 0 0 20px rgba(255, 235, 59, 0.8), 3px 3px 0px rgba(0,0,0,0.8); /* Glow effect */
 }
 
-/* Inputs */
-.input-group {
-    margin: 20px 0;
+/* Team Setup Styles */
+.section-title {
+    font-size: 50px;
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
-input[type="text"] {
-    padding: 15px;
-    font-size: 20px;
-    border-radius: 4px;
-    border: none;
+.team-setup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.vs-image {
+    width: 150px;
+    height: auto;
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+}
+
+.team-input {
+    padding: 20px;
+    font-size: 24px;
+    border-radius: 8px;
+    border: 3px solid white;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
     width: 300px;
     text-align: center;
-    box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+    transition: background-color 0.3s;
 }
+
+.team-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.team-input:focus {
+    background-color: rgba(255, 255, 255, 0.4);
+    outline: none;
+    border-color: #ffeb3b;
+}
+
+.confirm-btn {
+    /* Override option text style back to button style for this specific one if desired, 
+       or keep it as text link. Let's make it a button for clarity but keep style similar. */
+    border: 3px solid white;
+    border-radius: 50px;
+    padding: 15px 50px;
+    background-color: rgba(0,0,0,0.3);
+}
+.confirm-btn:hover {
+    background-color: white;
+    color: #333;
+    text-shadow: none;
+}
+
 
 /* Wallpapers */
 .wallpapers {
