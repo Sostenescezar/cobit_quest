@@ -100,12 +100,7 @@ const questionText = document.getElementById('question-text');
 const answersContainer = document.getElementById('answers-container');
 const winnerText = document.getElementById('winner-text');
 
-const container = document.querySelector('.container');
-
 // Init
-// Set initial background
-container.style.backgroundImage = "url('img/olindadofuturo.jpg')";
-
 btnNewGame.addEventListener('click', () => {
     mainMenu.classList.add('hidden');
     teamSetup.classList.remove('hidden');
@@ -174,10 +169,6 @@ function updateUI() {
     team2ScoreDisplay.innerText = `${gameState.team2.name}: ${gameState.team2.score}`;
     const currentName = gameState.currentTurn === 1 ? gameState.team1.name : gameState.team2.name;
     turnIndicator.innerText = `Vez de: ${currentName}`;
-    
-    // Update background based on turn
-    const currentAvatar = gameState.currentTurn === 1 ? gameState.team1.avatar : gameState.team2.avatar;
-    container.style.backgroundImage = `url('${currentAvatar}')`;
 }
 
 function loadQuestion() {
@@ -196,11 +187,9 @@ function loadQuestion() {
     
     answersContainer.innerHTML = '';
     
-    const colorClasses = ['btn-red', 'btn-blue', 'btn-yellow', 'btn-green'];
-    
-    answerIndices.forEach((index, i) => {
+    answerIndices.forEach(index => {
         const btn = document.createElement('button');
-        btn.classList.add('answer-btn', colorClasses[i]); // Apply color class based on position
+        btn.classList.add('option');
         btn.innerText = q.a[index];
         btn.addEventListener('click', () => handleAnswer(index, q.correct));
         answersContainer.appendChild(btn);
