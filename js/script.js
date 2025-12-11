@@ -22,48 +22,165 @@ const wallpapers = [
 // Questions (40 total)
 const questions = [
     // Team 1 Set
-    { q: "O que significa a sigla COBIT?", a: ["Control Objectives for Information and Related Technologies", "Computer Objectives for IT", "Control of Business IT", "Common Objectives for IT"], correct: 0 },
-    { q: "Qual é o foco principal do COBIT?", a: ["Governança de TI", "Desenvolvimento de Software", "Redes de Computadores", "Suporte Técnico"], correct: 0 },
-    { q: "Quantos princípios o COBIT 5 possui?", a: ["5", "4", "7", "10"], correct: 0 },
-    { q: "Qual domínio do COBIT trata de 'Alinhar, Planejar e Organizar'?", a: ["APO", "BAI", "DSS", "MEA"], correct: 0 },
-    { q: "O COBIT ajuda a alinhar TI com...", a: ["Os objetivos do negócio", "O hardware mais recente", "Os concorrentes", "O departamento financeiro apenas"], correct: 0 },
-    { q: "Qual é a versão mais recente do COBIT (até 2019)?", a: ["COBIT 2019", "COBIT 6", "COBIT 5.5", "COBIT X"], correct: 0 },
-    { q: "EDM significa...", a: ["Avaliar, Dirigir e Monitorar", "Executar, Definir e Manter", "Engajar, Desenvolver e Medir", "Entender, Documentar e Mapear"], correct: 0 },
-    { q: "Qual destes NÃO é um princípio do COBIT 5?", a: ["Focar apenas no lucro", "Atender às necessidades das partes interessadas", "Cobrir a empresa de ponta a ponta", "Aplicar um framework único e integrado"], correct: 0 },
-    { q: "O que é um 'Habilitador' no COBIT?", a: ["Fatores que influenciam o sucesso da governança", "Um software específico", "Um tipo de servidor", "Um cargo na diretoria"], correct: 0 },
-    { q: "BAI significa...", a: ["Construir, Adquirir e Implementar", "Buscar, Analisar e Integrar", "Basear, Avaliar e Inovar", "Business And Information"], correct: 0 },
-    { q: "Quem é o principal público-alvo do COBIT?", a: ["Executivos, Gestores e Auditores", "Apenas Programadores", "Usuários finais apenas", "Estudantes do ensino médio"], correct: 0 },
-    { q: "O COBIT é mantido por qual organização?", a: ["ISACA", "Microsoft", "Google", "ISO"], correct: 0 },
-    { q: "DSS significa...", a: ["Entregar, Servir e Suportar", "Desenvolver, Segurar e Salvar", "Dados, Sistemas e Segurança", "Diretrizes de Software Seguro"], correct: 0 },
-    { q: "MEA significa...", a: ["Monitorar, Avaliar e Analisar", "Medir, Executar e Aplicar", "Mapear, Estruturar e Arquivar", "Manter, Escalar e Adaptar"], correct: 0 },
-    { q: "A Governança de TI garante que...", a: ["A TI entregue valor ao negócio", "Os computadores nunca quebrem", "A internet seja rápida", "Todos usem Linux"], correct: 0 },
-    { q: "O COBIT distingue claramente entre...", a: ["Governança e Gestão", "Hardware e Software", "Lucro e Prejuízo", "Gerentes e Estagiários"], correct: 0 },
-    { q: "Qual é o primeiro passo na implementação do COBIT?", a: ["Entender o contexto e estratégia da empresa", "Comprar licenças de software", "Demitir a equipe de TI", "Instalar antivírus"], correct: 0 },
-    { q: "A Cascata de Objetivos do COBIT traduz...", a: ["Objetivos das partes interessadas em objetivos de TI", "Inglês para Português", "Código binário para texto", "Lucros em prejuízos"], correct: 0 },
-    { q: "Um processo no COBIT é definido como...", a: ["Um conjunto de práticas e atividades", "Um programa de computador", "Uma reunião semanal", "Um documento em PDF"], correct: 0 },
-    { q: "Qual o nível de capacidade mais alto no modelo de processos do COBIT?", a: ["5", "10", "3", "100"], correct: 0 },
+    { q: "O que significa a sigla COBIT?", 
+        a: ["Control Objectives for Information and Related Technology", "Control Objectives for Business and IT", "Control Operations for IT", "Controls and Objectives for IT"], 
+        correct: 0 },
 
-    // Team 2 Set
-    { q: "Governança Corporativa e Governança de TI são...", a: ["Interligadas, mas distintas", "A mesma coisa", "Incompatíveis", "Opostos"], correct: 0 },
-    { q: "Qual destes é um domínio de Gestão no COBIT?", a: ["BAI", "EDM", "ISO", "PMBOK"], correct: 0 },
-    { q: "Os 'Princípios' do COBIT servem para...", a: ["Guiar a criação do sistema de governança", "Decorar paredes", "Criar senhas fortes", "Nenhuma das anteriores"], correct: 0 },
-    { q: "A dimensão 'Pessoas, Habilidades e Competências' é...", a: ["Um habilitador", "Um problema", "Irrelevante", "Um software"], correct: 0 },
-    { q: "O COBIT pode ser usado com outros frameworks como ITIL?", a: ["Sim, é altamente recomendável", "Não, são proibidos", "Talvez, mas é difícil", "Apenas se pagar taxa extra"], correct: 0 },
-    { q: "Qual a função do 'Framework' no COBIT?", a: ["Fornecer estrutura e consistência", "Gerar relatórios financeiros", "Bloquear sites", "Monitorar câmeras"], correct: 0 },
-    { q: "A 'Gestão' no COBIT é responsável por...", a: ["Planejar, construir, executar e monitorar", "Apenas mandar", "Avaliar e dirigir (isso é Governança)", "Fazer café"], correct: 0 },
-    { q: "O 'Modelo Core' do COBIT 2019 possui quantos objetivos de governança/gestão?", a: ["40", "5", "100", "12"], correct: 0 },
-    { q: "Fatores de Design no COBIT 2019 ajudam a...", a: ["Personalizar o sistema de governança", "Escolher a cor do logo", "Contratar funcionários", "Comprar computadores"], correct: 0 },
-    { q: "A quem o CIO deve reportar idealmente?", a: ["CEO ou COO", "Ao estagiário", "Ao porteiro", "A ninguém"], correct: 0 },
-    { q: "Compliance significa...", a: ["Estar em conformidade com leis e regulamentos", "Comprar peças", "Computação em nuvem", "Complexidade"], correct: 0 },
-    { q: "Gestão de Riscos de TI envolve...", a: ["Identificar e mitigar ameaças", "Ignorar problemas", "Apenas instalar firewall", "Ter sorte"], correct: 0 },
-    { q: "Um exemplo de métrica de TI é...", a: ["Tempo de disponibilidade do sistema (Uptime)", "Cor dos cabos", "Marca do teclado", "Nome do servidor"], correct: 0 },
-    { q: "SLA significa...", a: ["Service Level Agreement", "System Local Area", "Secure Link Access", "Software Legal Agreement"], correct: 0 },
-    { q: "Qual é o papel da Auditoria de TI?", a: ["Verificar se os controles estão funcionando", "Desenvolver software", "Vender computadores", "Limpar o escritório"], correct: 0 },
-    { q: "PDCA (Plan-Do-Check-Act) é...", a: ["Um ciclo de melhoria contínua", "Uma marca de computador", "Um tipo de cabo", "Um vírus"], correct: 0 },
-    { q: "KPI significa...", a: ["Key Performance Indicator", "Key Process Input", "Keep People Interested", "Keyboard Input"], correct: 0 },
-    { q: "A Matriz RACI define...", a: ["Responsabilidades (Quem faz o quê)", "Rede de computadores", "Regras de firewall", "Rota de backup"], correct: 0 },
-    { q: "Qual a importância da Cultura na Governança?", a: ["Fundamental, pois influencia o comportamento", "Nenhuma", "Apenas para festas", "Secundária"], correct: 0 },
-    { q: "O COBIT substitui o trabalho técnico?", a: ["Não, ele orienta a gestão e governança", "Sim, faz tudo sozinho", "Sim, robôs assumem", "Talvez"], correct: 0 }
+    { q: "Qual organização desenvolveu o COBIT?", 
+        a: ["NIST", "ISO", "ISACA", "ITIL Foundation"], 
+        correct: 2 },
+
+    { q: "Qual versão do COBIT introduziu os 'fatores de desenho' e 40 objetivos?", 
+        a: ["COBIT 5", "COBIT 2019", "COBIT 4.1", "COBIT 2007"], 
+        correct: 1 },
+
+    { q: "Quantos objetivos de governança e gerenciamento o COBIT 2019 lista?", 
+        a: ["40", "20", "15", "60"], 
+        correct: 0 },
+
+    { q: "Qual dos itens abaixo NÃO é listado como componente do sistema de governança segundo o COBIT?", 
+        a: ["Estruturas organizacionais", "Processos", "Práticas", "Marketing externo"], 
+        correct: 3 },
+
+    { q: "Um dos propósitos do COBIT é alinhar TI com:", 
+        a: ["Objetivos de negócio", "Plataformas de nuvem", "Linguagens de programação", "Fornecedores"], 
+        correct: 0 },
+
+    { q: "Quais são os 'fatores de desenho' no COBIT?", 
+        a: ["Técnicas de codificação", "Parâmetros para adaptar o sistema de governança", "Modelos de contrato", "Frameworks de segurança"], 
+        correct: 1 },
+
+    { q: "O COBIT 2019 distingue dois conjuntos de princípios. Um deles refere-se ao sistema de governança. Cite um princípio:", 
+        a: ["Prover valor às partes interessadas", "Automação completa", "Substituir auditoria", "Centralização de TI"], 
+        correct: 0 },
+
+    { q: "O COBIT foi originalmente criado em que ano?", 
+        a: ["1988", "2005", "2012", "1996"], 
+        correct: 3 },
+
+    { q: "Qual objetivo principal do 'Design Guide' do COBIT 2019?", 
+        a: ["Listar controles detalhados", "Orientar como adaptar o framework à realidade da organização", "Substituir o COBIT 5", "Definir políticas de RH"], 
+        correct: 1 },
+
+    { q: "Qual certificação COBIT certifica conhecimentos básicos do COBIT 2019?", 
+        a: ["Foundation Bridge", "Design and Implementation", "Implementing NIST using COBIT", "COBIT 2019 Foundation"], 
+        correct: 3 },
+
+    { q: "O que o COBIT 2019 introduziu para facilitar a personalização?", 
+        a: ["Checklist fixo", "Áreas de foco e medições", "Modelo único", "Protocolo de rede"], 
+        correct: 1 },
+
+    { q: "A quem o COBIT originalmente auxiliava quando foi criado?", 
+        a: ["Auditores financeiros", "Desenvolvedores", "Recursos Humanos", "Marketing"], 
+        correct: 0 },
+
+    { q: "O COBIT 2019 está alinhado a outros frameworks. Cite um exemplo:", 
+        a: ["ISO 9001", "HTML", "TCP/IP", "ITIL"], 
+        correct: 3 },
+
+    { q: "O que significa 'governança distinta do gerenciamento'?", 
+        a: ["Automatizar RH", "Unificar execução", "Gerenciar ativos financeiros", "Separar decisão e execução"], 
+        correct: 3 },
+
+    { q: "Uma vantagem da implementação do COBIT é:", 
+        a: ["Reduzir equipe", "Aumentar servidores", "Melhorar a segurança da informação", "Eliminar fornecedores"], 
+        correct: 2 },
+
+    { q: "Quantos conjuntos de princípios o COBIT 2019 apresenta?", 
+        a: ["Dois", "Um", "Quatro", "Seis"], 
+        correct: 0 },
+
+    { q: "O que são 'áreas de foco' no COBIT 2019?", 
+        a: ["Questões específicas relacionadas aos objetivos", "Tipos de servidores", "Orçamento", "Softwares"], 
+        correct: 0 },
+
+    { q: "Qual a relação entre COBIT e conformidade?", 
+        a: ["Substitui leis", "Suporta controles de conformidade", "Ignora conformidade", "Não é aplicável a finanças"], 
+        correct: 1 },
+
+    { q: "Quem publica os guias oficiais do COBIT 2019?", 
+        a: ["ISACA", "ISO", "NIST", "Microsoft"], 
+        correct: 0 },
+
+
+// Team 2 Set
+    { q: "O que é governança de TI?", 
+        a: ["Linguagem de programação", "Sistema operacional", "Conjunto de normas e práticas de TI", "Tipo de firewall"], 
+        correct: 2 },
+
+    { q: "Qual é um objetivo central da governança de TI?", 
+        a: ["Aumentar internet", "Instalar servidores", "Escrever código", "Entregar valor ao negócio"], 
+        correct: 3 },
+
+    { q: "Segundo a IBM, a governança de TI ajuda a gerenciar:", 
+        a: ["Apenas legados", "Somente fornecedores", "Apenas backups", "Riscos, conformidade e alinhamento"], 
+        correct: 3 },
+
+    { q: "Diferença entre governança e gerenciamento:", 
+        a: ["Governança executa; gerenciamento decide", "Governança decide; gerenciamento executa", "Não há diferença", "TI = negócio"], 
+        correct: 1 },
+
+    { q: "Qual norma frequentemente citada junto à governança de TI?", 
+        a: ["PCI-DSS", "Sarbanes-Oxley (SOX)", "HIPAA", "GDPR"], 
+        correct: 1 },
+
+    { q: "Quem deve participar da governança de TI?", 
+        a: ["Apenas fornecedores", "Apenas desenvolvimento", "Executivos e stakeholders", "Apenas clientes"], 
+        correct: 2 },
+
+    { q: "Um dos benefícios da governança de TI:", 
+        a: ["Alinhamento estratégico", "Redução de 90% de custos", "Automação total", "Eliminar governança"], 
+        correct: 0 },
+
+    { q: "O que é um comitê de governança de TI?", 
+        a: ["Grupo que define decisões estratégicas", "Operação de redes", "RH", "Fornecedor"], correct: 0 },
+
+    { q: "Governança de TI ajuda a:", 
+        a: ["Aumentar ruído", "Escrever código rápido", "Selecionar fornecedores aleatórios", "Garantir que investimentos gerem valor"], 
+        correct: 3 },
+
+    { q: "O que costuma formalizar políticas de governança?", 
+        a: ["Guias de estilo", "UML", "Testes unitários", "Políticas e frameworks internos"], correct: 3 },
+
+    { q: "Governança de TI e compliance:", 
+        a: ["Define controles que suportam requisitos legais", "Ignora regras", "Substitui leis", "Melhora interfaces"], 
+        correct: 0 },
+
+    { q: "Modelo de referência comum para processos de TI:", 
+        a: ["Manifesto ágil", "HTML5", "TCP/IP", "ITIL"], 
+        correct: 3 },
+
+    { q: "A governança de TI é responsabilidade exclusiva de TI?", 
+        a: ["Falso", "Verdadeiro", "Às vezes", "Depende"], 
+        correct: 0 },
+
+    { q: "Papel executivo envolvido na governança:", 
+        a: ["Suporte nível 1", "Estagiário", "CIO", "Fornecedor"], 
+        correct: 2 },
+
+    { q: "O que significa alinhamento estratégico?", 
+        a: ["TI opera sem supervisão", "TI define mercado", "TI impulsiona objetivos do negócio", "TI corta orçamento"], 
+        correct: 2 },
+
+    { q: "A governança de TI contribui para a gestão de riscos ligados a:", 
+        a: ["Redes sociais", "Segurança e continuidade", "Design gráfico", "Impressoras"], 
+        correct: 1 },
+
+    { q: "Elemento chave da governança:", 
+        a: ["Contratação", "KPIs e medição", "Terceirização", "Compra de hardware"], 
+        correct: 1 },
+
+    { q: "Framework NÃO usado para governança:", 
+        a: ["ITIL (operações/serviços)", "COBIT", "NIST", "Agile"], 
+        correct: 0 },
+
+    { 
+        q: "Prática recomendada para responsabilidade em TI:", 
+        a: ["Deixar fornecedores decidirem", "Não documentar", "Trocar times", "Definir papéis claros (RACI)"], 
+        correct: 3 },
+
+    { q: "Governança de TI ajuda a otimizar:", 
+        a: ["Design do site", "Investimentos e recursos", "Processo de contratação", "Cafeteria"], correct: 1 }
 ];
 
 // Shuffle array utility
