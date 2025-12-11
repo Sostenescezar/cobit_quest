@@ -119,12 +119,42 @@ const vsTeam1Name = document.getElementById('vs-team1-name');
 const vsTeam2Avatar = document.getElementById('vs-team2-avatar');
 const vsTeam2Name = document.getElementById('vs-team2-name');
 
+// Options & Audio Elements
+const optionsMenu = document.getElementById('options-menu');
+const btnOptions = document.getElementById('btn-options');
+const btnOptionsBack = document.getElementById('btn-options-back');
+const musicToggle = document.getElementById('music-toggle');
+const bgMusic = document.getElementById('bg-music');
+
+let musicEnabled = true;
+
 const timerDisplay = document.getElementById('timer-display');
 const container = document.querySelector('.container');
 
 // Init
 if (container) {
     container.style.backgroundImage = "url('img/olindadofuturo.jpg')";
+}
+
+// Options Menu Logic
+if (btnOptions) {
+    btnOptions.addEventListener('click', () => {
+        mainMenu.classList.add('hidden');
+        optionsMenu.classList.remove('hidden');
+    });
+}
+
+if (btnOptionsBack) {
+    btnOptionsBack.addEventListener('click', () => {
+        optionsMenu.classList.add('hidden');
+        mainMenu.classList.remove('hidden');
+    });
+}
+
+if (musicToggle) {
+    musicToggle.addEventListener('change', (e) => {
+        musicEnabled = e.target.checked;
+    });
 }
 
 // Avatar Upload Logic
@@ -244,6 +274,11 @@ function startGame() {
     gameArea.classList.remove('hidden');
     updateUI();
     loadQuestion();
+
+    if (musicEnabled && bgMusic) {
+        bgMusic.volume = 0.3; // Set a reasonable volume
+        bgMusic.play().catch(e => console.log("Audio play failed:", e));
+    }
 }
 
 function updateUI(addedPoints = 0) {
@@ -435,6 +470,11 @@ function endGame() {
     clearInterval(gameState.timer);
     gameArea.classList.add('hidden');
     gameOverScreen.classList.remove('hidden');
+
+    if (bgMusic) {
+        bgMusic.pause();
+        bgMusic.currentTime = 0;
+    }
     
     let resultMsg = "";
     if (gameState.team1.score > gameState.team2.score) {
