@@ -1,4 +1,3 @@
-
 // State
 const gameState = {
     team1: { name: "", avatar: "", score: 0 },
@@ -18,9 +17,9 @@ const wallpapers = [
     'img/suíça.png'
 ];
 
-// Placeholder Questions (40 total)
+// Questions (40 total)
 const questions = [
-    // Team 1 Set (Mix of COBIT/IT Gov/General for demo)
+    // Team 1 Set
     { q: "O que significa a sigla COBIT?", a: ["Control Objectives for Information and Related Technologies", "Computer Objectives for IT", "Control of Business IT", "Common Objectives for IT"], correct: 0 },
     { q: "Qual é o foco principal do COBIT?", a: ["Governança de TI", "Desenvolvimento de Software", "Redes de Computadores", "Suporte Técnico"], correct: 0 },
     { q: "Quantos princípios o COBIT 5 possui?", a: ["5", "4", "7", "10"], correct: 0 },
@@ -46,7 +45,7 @@ const questions = [
     { q: "Governança Corporativa e Governança de TI são...", a: ["Interligadas, mas distintas", "A mesma coisa", "Incompatíveis", "Opostos"], correct: 0 },
     { q: "Qual destes é um domínio de Gestão no COBIT?", a: ["BAI", "EDM", "ISO", "PMBOK"], correct: 0 },
     { q: "Os 'Princípios' do COBIT servem para...", a: ["Guiar a criação do sistema de governança", "Decorar paredes", "Criar senhas fortes", "Nenhuma das anteriores"], correct: 0 },
-    { q: "A dimensão 'Pessoas, Habilidades e Competências' é...", a: ["Um habilitador", "Um problema", "Irrelevante", "Um software"], correct: 0 }, // Oops, corrected index logic in game loop needed, logic assumes 0 is correct? I will shuffle answers.
+    { q: "A dimensão 'Pessoas, Habilidades e Competências' é...", a: ["Um habilitador", "Um problema", "Irrelevante", "Um software"], correct: 0 },
     { q: "O COBIT pode ser usado com outros frameworks como ITIL?", a: ["Sim, é altamente recomendável", "Não, são proibidos", "Talvez, mas é difícil", "Apenas se pagar taxa extra"], correct: 0 },
     { q: "Qual a função do 'Framework' no COBIT?", a: ["Fornecer estrutura e consistência", "Gerar relatórios financeiros", "Bloquear sites", "Monitorar câmeras"], correct: 0 },
     { q: "A 'Gestão' no COBIT é responsável por...", a: ["Planejar, construir, executar e monitorar", "Apenas mandar", "Avaliar e dirigir (isso é Governança)", "Fazer café"], correct: 0 },
@@ -100,26 +99,39 @@ const questionText = document.getElementById('question-text');
 const answersContainer = document.getElementById('answers-container');
 const winnerText = document.getElementById('winner-text');
 
+const container = document.querySelector('.container');
+
 // Init
-btnNewGame.addEventListener('click', () => {
-    mainMenu.classList.add('hidden');
-    teamSetup.classList.remove('hidden');
-});
+// Set initial background
+if (container) {
+    container.style.backgroundImage = "url('img/olindadofuturo.jpg')";
+}
 
-btnConfirmNames.addEventListener('click', () => {
-    const t1Name = team1NameInput.value.trim() || "Equipe 1";
-    const t2Name = team2NameInput.value.trim() || "Equipe 2";
-    
-    gameState.team1.name = t1Name;
-    gameState.team2.name = t2Name;
-    
-    teamSetup.classList.add('hidden');
-    startWallpaperSelection(1);
-});
+if (btnNewGame) {
+    btnNewGame.addEventListener('click', () => {
+        mainMenu.classList.add('hidden');
+        teamSetup.classList.remove('hidden');
+    });
+}
 
-btnRestart.addEventListener('click', () => {
-    location.reload(); // Simple reload to restart
-});
+if (btnConfirmNames) {
+    btnConfirmNames.addEventListener('click', () => {
+        const t1Name = team1NameInput.value.trim() || "Equipe 1";
+        const t2Name = team2NameInput.value.trim() || "Equipe 2";
+        
+        gameState.team1.name = t1Name;
+        gameState.team2.name = t2Name;
+        
+        teamSetup.classList.add('hidden');
+        startWallpaperSelection(1);
+    });
+}
+
+if (btnRestart) {
+    btnRestart.addEventListener('click', () => {
+        location.reload(); // Simple reload to restart
+    });
+}
 
 function startWallpaperSelection(teamNum) {
     gameState.selectingAvatarFor = teamNum;
@@ -169,6 +181,12 @@ function updateUI() {
     team2ScoreDisplay.innerText = `${gameState.team2.name}: ${gameState.team2.score}`;
     const currentName = gameState.currentTurn === 1 ? gameState.team1.name : gameState.team2.name;
     turnIndicator.innerText = `Vez de: ${currentName}`;
+    
+    // Update background based on turn
+    const currentAvatar = gameState.currentTurn === 1 ? gameState.team1.avatar : gameState.team2.avatar;
+    if (container && currentAvatar) {
+        container.style.backgroundImage = `url('${currentAvatar}')`;
+    }
 }
 
 function loadQuestion() {
@@ -187,9 +205,11 @@ function loadQuestion() {
     
     answersContainer.innerHTML = '';
     
-    answerIndices.forEach(index => {
+    const colorClasses = ['btn-red', 'btn-blue', 'btn-yellow', 'btn-green'];
+    
+    answerIndices.forEach((index, i) => {
         const btn = document.createElement('button');
-        btn.classList.add('option');
+        btn.classList.add('answer-btn', colorClasses[i]); // Apply color class based on position
         btn.innerText = q.a[index];
         btn.addEventListener('click', () => handleAnswer(index, q.correct));
         answersContainer.appendChild(btn);
