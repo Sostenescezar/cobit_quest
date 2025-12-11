@@ -353,10 +353,10 @@ body, html {
 }
 
 /* Colors */
-.btn-red { background-color: #e21b3c; }
-.btn-blue { background-color: #1368ce; }
-.btn-yellow { background-color: #d89e00; }
-.btn-green { background-color: #26890c; }
+.btn-red { background-color: #800020; }
+.btn-blue { background-color: #280137; }
+.btn-yellow { background-color: #FFA500; }
+.btn-green { background-color: #8A9A5B; }
 
 /* Feedback States */
 .correct-answer {
