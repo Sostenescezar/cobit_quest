@@ -150,21 +150,6 @@ input[type="text"] {
     gap: 10px;
 }
 
-.timer-circle {
-    width: 60px;
-    height: 60px;
-    background-color: #660099; /* Kahoot purple-ish */
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 28px;
-    border: 3px solid white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-}
-
-
 .turn-badge {
     background-color: rgba(255, 255, 255, 0.9);
     color: #333;
@@ -190,32 +175,23 @@ input[type="text"] {
     position: relative; /* Needed for absolute positioning of timer */
 }
 
-.answer-btn {
-    border: none;
-    padding: 20px;
-    font-size: 22px;
-    font-weight: bold;
+/* Question Counter */
+.question-counter {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 50px; /* Match timer width */
+    height: 50px; /* Match timer height */
+    background-color: #660099; /* Kahoot purple-ish */
     color: white;
-    cursor: pointer;
-    transition: transform 0.1s ease-out, filter 0.1s; /* Added ease-out for smoother hover */
-    border-radius: 4px;
-    text-align: left;
+    border-radius: 50%; /* Make it round */
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: flex-start;
-    box-shadow: 0 4px 0 rgba(0,0,0,0.2);
-    position: relative;
-    overflow: hidden;
-}
-
-.answer-btn:hover {
-    filter: brightness(1.1);
-    transform: scale(1.02); /* Slight increase on hover */
-}
-
-.answer-btn:active {
-    transform: translateY(4px);
-    box-shadow: none;
+    font-size: 24px; /* Match timer font size */
+    border: 2px solid white; /* Match timer border */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    z-index: 10;
 }
 
 /* Timer repositioning and styling for inside question-box */
@@ -237,6 +213,42 @@ input[type="text"] {
     z-index: 10; /* Ensure it's above question text */
 }
 
+.answers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    width: 100%;
+    flex-grow: 1; /* Allow it to take available space */
+}
+
+.answer-btn {
+    border: none;
+    padding: 20px;
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.1s ease-out, filter 0.1s, opacity 0.3s;
+    border-radius: 4px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.answer-btn:hover {
+    filter: brightness(1.1);
+    transform: scale(1.02); /* Slight increase on hover */
+}
+
+.answer-btn:active {
+    transform: translateY(4px);
+    box-shadow: none;
+}
+
 .answer-text {
     margin-left: 20px;
     flex-grow: 1;
@@ -248,6 +260,21 @@ input[type="text"] {
 .btn-blue { background-color: #1368ce; }
 .btn-yellow { background-color: #d89e00; }
 .btn-green { background-color: #26890c; }
+
+/* Feedback States */
+.correct-answer {
+    background-color: #66bf39 !important; /* Force Green */
+    opacity: 1 !important;
+}
+
+.wrong-answer {
+    background-color: #ff3355 !important; /* Force Red */
+    opacity: 0.5;
+}
+
+.dimmed-answer {
+    opacity: 0.3;
+}
 
 /* Geometric Shapes */
 .shape {
@@ -282,39 +309,4 @@ input[type="text"] {
     width: 28px;
     height: 28px;
     background-color: white;
-}
-
-/* Feedback Overlay */
-.feedback-screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0,0,0,0.9);
-    z-index: 100;
-    color: white;
-}
-
-.feedback-correct {
-    background-color: #66bf39; /* Green */
-}
-
-.feedback-wrong {
-    background-color: #ff3355; /* Red */
-}
-
-#feedback-text {
-    font-size: 60px;
-    font-weight: 900;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-}
-
-#feedback-icon {
-    font-size: 100px;
 }

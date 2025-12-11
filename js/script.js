@@ -100,10 +100,7 @@ const turnIndicator = document.getElementById('turn-indicator');
 const questionText = document.getElementById('question-text');
 const answersContainer = document.getElementById('answers-container');
 const winnerText = document.getElementById('winner-text');
-
-const feedbackOverlay = document.getElementById('feedback-overlay');
-const feedbackText = document.getElementById('feedback-text');
-const feedbackIcon = document.getElementById('feedback-icon');
+const questionCounter = document.getElementById('question-counter'); // New element
 
 const timerDisplay = document.getElementById('timer-display');
 const container = document.querySelector('.container');
@@ -198,6 +195,15 @@ function loadQuestion() {
         return;
     }
 
+    // Update Counter
+    // Since total is 40 (20 per team), but prompt says "show question number for each team", e.g., 2/20
+    // We can calculate current question per team.
+    // questionsAnswered increases by 1 each time.
+    // Team 1 plays on even indices (0, 2, 4...) if starting first? No, turn alternates.
+    const teamQuestionsAnswered = Math.floor(gameState.questionsAnswered / 2) + 1;
+    questionCounter.innerText = `${teamQuestionsAnswered}/20`;
+
+
     // Reset Timer
     clearInterval(gameState.timer);
     gameState.timeLeft = 60;
@@ -228,6 +234,7 @@ function loadQuestion() {
     answerIndices.forEach((index, i) => {
         const btn = document.createElement('button');
         btn.classList.add('answer-btn', colorClasses[i]);
+        btn.dataset.originalIndex = index; // Store index to check correctness
         
         const shape = document.createElement('div');
         shape.className = `shape ${shapeClasses[i]}`;
@@ -239,63 +246,91 @@ function loadQuestion() {
         btn.appendChild(shape);
         btn.appendChild(text);
         
-        btn.addEventListener('click', () => handleAnswer(index, q.correct));
+        btn.addEventListener('click', (e) => handleAnswer(e.currentTarget, index, q.correct));
         answersContainer.appendChild(btn);
     });
 }
 
 function handleTimeOut() {
-    // Show timeout feedback
-    feedbackOverlay.classList.remove('hidden');
-    feedbackOverlay.classList.remove('feedback-correct');
-    feedbackOverlay.classList.add('feedback-wrong');
-    feedbackText.innerText = "Tempo Esgotado!";
-    feedbackIcon.innerText = "⏰";
+    const buttons = answersContainer.querySelectorAll('.answer-btn');
+    const q = questions[gameState.questionsAnswered];
     
+    buttons.forEach(btn => {
+        // Disable clicks
+        btn.style.pointerEvents = 'none';
+
+        const index = parseInt(btn.dataset.originalIndex);
+        if (index === q.correct) {
+            btn.classList.add('correct-answer');
+            const check = document.createElement('span');
+            check.innerText = " ✔";
+            check.style.fontSize = "30px";
+            check.style.marginLeft = "10px";
+            btn.appendChild(check);
+        } else {
+            btn.classList.add('wrong-answer'); // All incorrect answers turn red
+            const x = document.createElement('span');
+            x.innerText = " ✖";
+            x.style.fontSize = "30px";
+            x.style.marginLeft = "10px";
+            btn.appendChild(x);
+        }
+    });
+
     setTimeout(() => {
-        feedbackOverlay.classList.add('hidden');
         gameState.questionsAnswered++;
         gameState.currentTurn = gameState.currentTurn === 1 ? 2 : 1;
         updateUI();
         loadQuestion();
-    }, 2000);
+    }, 4000); // Increased delay to 4 seconds
 }
 
-function handleAnswer(selectedIndex, correctIndex) {
-    clearInterval(gameState.timer); // Stop timer immediately
+function handleAnswer(clickedBtn, selectedIndex, correctIndex) {
+    clearInterval(gameState.timer); // Stop timer
     
     const isCorrect = selectedIndex === correctIndex;
+    const buttons = answersContainer.querySelectorAll('.answer-btn');
     
-    feedbackOverlay.classList.remove('hidden');
-    feedbackOverlay.classList.remove('feedback-correct', 'feedback-wrong');
+    buttons.forEach(btn => {
+        // Disable clicks
+        btn.style.pointerEvents = 'none';
+        
+        const index = parseInt(btn.dataset.originalIndex);
+        
+        if (index === correctIndex) {
+            btn.classList.add('correct-answer');
+            const check = document.createElement('span');
+            check.innerText = " ✔";
+            check.style.fontSize = "30px";
+            check.style.marginLeft = "10px";
+            btn.appendChild(check);
+        } else {
+            btn.classList.add('wrong-answer'); // All incorrect answers turn red
+            const x = document.createElement('span');
+            x.innerText = " ✖";
+            x.style.fontSize = "30px";
+            x.style.marginLeft = "10px";
+            btn.appendChild(x);
+        }
+    });
     
     if (isCorrect) {
-        feedbackOverlay.classList.add('feedback-correct');
-        
-        // Calculate Score: Max 1000, proportional to time left
+        // Calculate Score
         const points = Math.floor((gameState.timeLeft / 60) * 1000);
-        
-        feedbackText.innerText = `Correto! +${points}`;
-        feedbackIcon.innerText = "✔";
-        
         if (gameState.currentTurn === 1) {
             gameState.team1.score += points;
         } else {
             gameState.team2.score += points;
         }
-    } else {
-        feedbackOverlay.classList.add('feedback-wrong');
-        feedbackText.innerText = "Errado!";
-        feedbackIcon.innerText = "✖";
     }
     
+    // Wait then proceed
     setTimeout(() => {
-        feedbackOverlay.classList.add('hidden');
         gameState.questionsAnswered++;
         gameState.currentTurn = gameState.currentTurn === 1 ? 2 : 1;
         updateUI();
         loadQuestion();
-    }, 2000);
+    }, 4000); // Increased delay to 4 seconds
 }
 
 function endGame() {
