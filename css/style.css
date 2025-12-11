@@ -28,6 +28,7 @@ body, html {
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.4);
+    filter: blur(3px); /* Subtle blur for the background */
     z-index: 0;
 }
 
@@ -53,6 +54,15 @@ body, html {
     color: #fff;
     text-shadow: 4px 4px 0 #333;
     margin-bottom: 20px;
+}
+
+.game-logo {
+    max-width: 80%; /* Adjust as needed */
+    height: auto;
+    margin-bottom: 40px; /* Space between logo and options */
+    display: block; /* Ensure it takes its own line */
+    margin-left: auto; /* Center the image */
+    margin-right: auto; /* Center the image */
 }
 
 /* Options / Buttons */
