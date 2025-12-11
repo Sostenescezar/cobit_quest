@@ -23,13 +23,27 @@
         <div id="team-setup" class="menu hidden">
             <h2 class="section-title">Nomes das Equipes</h2>
             <div class="team-setup-container">
-                <div class="input-group">
+                <div class="input-group team-col">
+                    <div class="avatar-upload">
+                        <label for="team1-avatar-input">
+                            <img src="img/perfil.jpg" id="team1-preview" class="avatar-preview" alt="Avatar Equipe 1">
+                        </label>
+                        <input type="file" id="team1-avatar-input" accept="image/*" class="hidden-input">
+                    </div>
                     <input type="text" id="team1-name" placeholder="Nome da Equipe 1" class="team-input">
                 </div>
+                
                 <div class="vs-container">
                     <img src="img/VS.png" alt="VS" class="vs-image">
                 </div>
-                <div class="input-group">
+                
+                <div class="input-group team-col">
+                    <div class="avatar-upload">
+                        <label for="team2-avatar-input">
+                            <img src="img/perfil.jpg" id="team2-preview" class="avatar-preview" alt="Avatar Equipe 2">
+                        </label>
+                        <input type="file" id="team2-avatar-input" accept="image/*" class="hidden-input">
+                    </div>
                     <input type="text" id="team2-name" placeholder="Nome da Equipe 2" class="team-input">
                 </div>
             </div>

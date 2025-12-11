@@ -102,12 +102,37 @@ const answersContainer = document.getElementById('answers-container');
 const winnerText = document.getElementById('winnerText');
 const questionCounter = document.getElementById('question-counter'); // New element
 
+// Avatar Inputs
+const team1AvatarInput = document.getElementById('team1-avatar-input');
+const team2AvatarInput = document.getElementById('team2-avatar-input');
+const team1Preview = document.getElementById('team1-preview');
+const team2Preview = document.getElementById('team2-preview');
+
 const timerDisplay = document.getElementById('timer-display');
 const container = document.querySelector('.container');
 
 // Init
 if (container) {
     container.style.backgroundImage = "url('img/olindadofuturo.jpg')";
+}
+
+// Avatar Upload Logic
+function handleAvatarUpload(input, previewElement) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewElement.src = e.target.result;
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+if (team1AvatarInput) {
+    team1AvatarInput.addEventListener('change', () => handleAvatarUpload(team1AvatarInput, team1Preview));
+}
+
+if (team2AvatarInput) {
+    team2AvatarInput.addEventListener('change', () => handleAvatarUpload(team2AvatarInput, team2Preview));
 }
 
 if (btnNewGame) {
@@ -124,6 +149,10 @@ if (btnConfirmNames) {
         
         gameState.team1.name = t1Name;
         gameState.team2.name = t2Name;
+        
+        // Save Logos
+        gameState.team1.logo = team1Preview.src;
+        gameState.team2.logo = team2Preview.src;
         
         teamSetup.classList.add('hidden');
         startWallpaperSelection(1);
