@@ -1,3 +1,4 @@
+
 // State
 const gameState = {
     team1: { name: "", avatar: "", score: 0 },
