@@ -225,6 +225,20 @@ body, html {
     padding: 0 40px;
 }
 
+.team-header {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Space between text and avatar */
+}
+
+.header-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+}
+
 .center-info {
     display: flex;
     flex-direction: column;

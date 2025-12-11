@@ -1,7 +1,7 @@
 // State
 const gameState = {
-    team1: { name: "", avatar: "", score: 0 },
-    team2: { name: "", avatar: "", score: 0 },
+    team1: { name: "", avatar: "", score: 0, logo: "" },
+    team2: { name: "", avatar: "", score: 0, logo: "" },
     currentTurn: 1, // 1 or 2
     questionsAnswered: 0,
     maxQuestions: 40, // 20 per team
@@ -94,13 +94,16 @@ const wallpaperTitle = document.getElementById('wallpaper-title');
 const team1NameInput = document.getElementById('team1-name');
 const team2NameInput = document.getElementById('team2-name');
 
-const team1ScoreDisplay = document.getElementById('team1-score-display');
-const team2ScoreDisplay = document.getElementById('team2-score-display');
+const team1ScoreText = document.getElementById('team1-score-text');
+const team2ScoreText = document.getElementById('team2-score-text');
+const team1AvatarDisplay = document.getElementById('team1-avatar-display');
+const team2AvatarDisplay = document.getElementById('team2-avatar-display');
+
 const turnIndicator = document.getElementById('turn-indicator');
 const questionText = document.getElementById('question-text');
 const answersContainer = document.getElementById('answers-container');
-const winnerText = document.getElementById('winnerText');
-const questionCounter = document.getElementById('question-counter'); // New element
+const winnerText = document.getElementById('winner-text'); // Fixed ID
+const questionCounter = document.getElementById('question-counter');
 
 // Avatar Inputs
 const team1AvatarInput = document.getElementById('team1-avatar-input');
@@ -150,9 +153,9 @@ if (btnConfirmNames) {
         gameState.team1.name = t1Name;
         gameState.team2.name = t2Name;
         
-        // Save Logos
-        gameState.team1.logo = team1Preview.src;
-        gameState.team2.logo = team2Preview.src;
+        // Save Logos (use default if not changed)
+        gameState.team1.logo = team1Preview ? team1Preview.src : '';
+        gameState.team2.logo = team2Preview ? team2Preview.src : '';
         
         teamSetup.classList.add('hidden');
         startWallpaperSelection(1);
@@ -194,9 +197,9 @@ function selectWallpaper(src) {
 }
 
 function startGame() {
-    gameState.score = 0; // Not used really, individual scores used
+    gameState.score = 0; 
     gameState.questionsAnswered = 0;
-    gameState.currentTurn = 1; // Team 1 starts
+    gameState.currentTurn = 1; 
     
     shuffle(questions);
     
@@ -209,7 +212,6 @@ function updateUI(addedPoints = 0) {
     let t1Text = `${gameState.team1.name}: ${gameState.team1.score}`;
     let t2Text = `${gameState.team2.name}: ${gameState.team2.score}`;
     
-    // Add animation text if points were added
     if (addedPoints > 0) {
         if (gameState.currentTurn === 1) {
             t1Text += ` (+${addedPoints})`;
@@ -218,13 +220,15 @@ function updateUI(addedPoints = 0) {
         }
     }
 
-    team1ScoreDisplay.innerText = t1Text;
-    team2ScoreDisplay.innerText = t2Text;
+    if (team1ScoreText) team1ScoreText.innerText = t1Text;
+    if (team2ScoreText) team2ScoreText.innerText = t2Text;
+    
+    if (team1AvatarDisplay) team1AvatarDisplay.src = gameState.team1.logo;
+    if (team2AvatarDisplay) team2AvatarDisplay.src = gameState.team2.logo;
     
     const currentName = gameState.currentTurn === 1 ? gameState.team1.name : gameState.team2.name;
-    turnIndicator.innerText = `Vez de: ${currentName}`;
+    if (turnIndicator) turnIndicator.innerText = `Vez de: ${currentName}`;
     
-    // Update background
     const currentAvatar = gameState.currentTurn === 1 ? gameState.team1.avatar : gameState.team2.avatar;
     if (container && currentAvatar) {
         container.style.backgroundImage = `url('${currentAvatar}')`;
@@ -237,17 +241,15 @@ function loadQuestion() {
         return;
     }
 
-    // Update Counter
-    const teamQuestionsAnswered = Math.floor(gameState.questionsAnswered / 2) + 1;
-    questionCounter.innerText = `${teamQuestionsAnswered}/20`;
+    if (questionCounter) {
+        const teamQuestionsAnswered = Math.floor(gameState.questionsAnswered / 2) + 1;
+        questionCounter.innerText = `${teamQuestionsAnswered}/20`;
+    }
 
-
-    // Reset Timer
     clearInterval(gameState.timer);
     gameState.timeLeft = 60;
     if(timerDisplay) timerDisplay.innerText = gameState.timeLeft;
     
-    // Start Timer
     gameState.timer = setInterval(() => {
         gameState.timeLeft--;
         if(timerDisplay) timerDisplay.innerText = gameState.timeLeft;
@@ -259,37 +261,40 @@ function loadQuestion() {
     }, 1000);
 
     const q = questions[gameState.questionsAnswered];
-    questionText.innerText = q.q;
+    if (questionText) questionText.innerText = q.q;
     
     let answerIndices = [0, 1, 2, 3];
     shuffle(answerIndices);
     
-    answersContainer.innerHTML = '';
-    
-    const colorClasses = ['btn-red', 'btn-blue', 'btn-yellow', 'btn-green'];
-    const shapeClasses = ['shape-triangle', 'shape-diamond', 'shape-circle', 'shape-square'];
-    
-    answerIndices.forEach((index, i) => {
-        const btn = document.createElement('button');
-        btn.classList.add('answer-btn', colorClasses[i]);
-        btn.dataset.originalIndex = index; // Store index to check correctness
+    if (answersContainer) {
+        answersContainer.innerHTML = '';
         
-        const shape = document.createElement('div');
-        shape.className = `shape ${shapeClasses[i]}`;
+        const colorClasses = ['btn-red', 'btn-blue', 'btn-yellow', 'btn-green'];
+        const shapeClasses = ['shape-triangle', 'shape-diamond', 'shape-circle', 'shape-square'];
         
-        const text = document.createElement('span');
-        text.className = 'answer-text';
-        text.innerText = q.a[index];
-        
-        btn.appendChild(shape);
-        btn.appendChild(text);
-        
-        btn.addEventListener('click', (e) => handleAnswer(e.currentTarget, index, q.correct));
-        answersContainer.appendChild(btn);
-    });
+        answerIndices.forEach((index, i) => {
+            const btn = document.createElement('button');
+            btn.classList.add('answer-btn', colorClasses[i]);
+            btn.dataset.originalIndex = index;
+            
+            const shape = document.createElement('div');
+            shape.className = `shape ${shapeClasses[i]}`;
+            
+            const text = document.createElement('span');
+            text.className = 'answer-text';
+            text.innerText = q.a[index];
+            
+            btn.appendChild(shape);
+            btn.appendChild(text);
+            
+            btn.addEventListener('click', (e) => handleAnswer(e.currentTarget, index, q.correct));
+            answersContainer.appendChild(btn);
+        });
+    }
 }
 
 function handleTimeOut() {
+    if (!answersContainer) return;
     const buttons = answersContainer.querySelectorAll('.answer-btn');
     const q = questions[gameState.questionsAnswered];
     
@@ -305,7 +310,6 @@ function handleTimeOut() {
             check.style.marginLeft = "10px";
             btn.appendChild(check);
         } else {
-            // All incorrect answers turn red and are dimmed if not selected by user
             btn.classList.add('unselected-wrong-answer'); 
             const x = document.createElement('span');
             x.innerText = " ✖";
@@ -320,14 +324,14 @@ function handleTimeOut() {
         gameState.currentTurn = gameState.currentTurn === 1 ? 2 : 1;
         updateUI();
         loadQuestion();
-    }, 4000); // Increased delay to 4 seconds
+    }, 4000);
 }
 
 function handleAnswer(clickedBtn, selectedIndex, correctIndex) {
-    clearInterval(gameState.timer); // Stop timer
+    clearInterval(gameState.timer); 
     
     const isCorrect = selectedIndex === correctIndex;
-    const buttons = answersContainer.querySelectorAll('.answer-btn');
+    const buttons = answersContainer ? answersContainer.querySelectorAll('.answer-btn') : [];
     let points = 0;
 
     if (isCorrect) {
@@ -345,13 +349,13 @@ function handleAnswer(clickedBtn, selectedIndex, correctIndex) {
         const index = parseInt(btn.dataset.originalIndex);
         
         // Create spans for icon and points
-        const feedbackContainer = document.createElement('span'); // Container for icon only now
-        feedbackContainer.style.marginLeft = 'auto'; // Push to the right
+        const feedbackContainer = document.createElement('span');
+        feedbackContainer.style.marginLeft = 'auto'; 
         
         const pointsSpan = document.createElement('span');
         pointsSpan.style.fontSize = "20px";
         pointsSpan.style.fontWeight = "bold";
-        pointsSpan.style.marginRight = "15px"; // Space after points (since it's on left now)
+        pointsSpan.style.marginRight = "15px"; 
         pointsSpan.classList.add('feedback-points'); 
 
         const iconSpan = document.createElement('span');
@@ -363,14 +367,14 @@ function handleAnswer(clickedBtn, selectedIndex, correctIndex) {
             
             if (btn === clickedBtn) { 
                 pointsSpan.innerText = `+${points}`;
-                btn.insertBefore(pointsSpan, btn.firstChild); // Insert points at the very beginning (left)
+                btn.insertBefore(pointsSpan, btn.firstChild); // Left side
             }
         } else { 
             if (btn === clickedBtn) { 
                 btn.classList.add('wrong-answer');
                 iconSpan.innerText = " ✖";
                 pointsSpan.innerText = `+0`;
-                btn.insertBefore(pointsSpan, btn.firstChild); // Insert points at the very beginning (left)
+                btn.insertBefore(pointsSpan, btn.firstChild); // Left side
             } else { 
                 btn.classList.add('unselected-wrong-answer');
             }
@@ -379,12 +383,12 @@ function handleAnswer(clickedBtn, selectedIndex, correctIndex) {
         btn.appendChild(feedbackContainer);
     });
     
-    updateUI(points); // Pass points to show animation
+    updateUI(points); 
     
     setTimeout(() => {
         gameState.questionsAnswered++;
         gameState.currentTurn = gameState.currentTurn === 1 ? 2 : 1;
-        updateUI(); // Clear animation (by calling with default addedPoints=0)
+        updateUI(); 
         loadQuestion();
     }, 4000);
 }
@@ -403,5 +407,7 @@ function endGame() {
         resultMsg = "Empate!";
     }
     
-    winnerText.innerText = `${resultMsg}\nPlacar Final:\n${gameState.team1.name}: ${gameState.team1.score}\n${gameState.team2.name}: ${gameState.team2.score}`;
+    if (winnerText) {
+        winnerText.innerText = `${resultMsg}\nPlacar Final:\n${gameState.team1.name}: ${gameState.team1.score}\n${gameState.team2.name}: ${gameState.team2.score}`;
+    }
 }
