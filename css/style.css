@@ -104,27 +104,32 @@ input[type="text"] {
 
 /* Wallpapers */
 .wallpapers {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
+    display: grid; /* Use grid for better control over rows/columns */
+    grid-template-columns: repeat(3, 1fr); /* 3 columns, equal width */
+    gap: 25px; /* Increased gap */
     margin-top: 30px;
+    max-width: 900px; /* Adjust max-width if needed to fit 3 items */
+    justify-content: center; /* Center the grid */
+    margin-left: auto; /* Center with auto margins */
+    margin-right: auto; /* Center with auto margins */
 }
 
 .wallpaper-option {
-    width: 180px;
-    height: 120px;
+    width: 200px; /* Increased width */
+    height: 140px; /* Increased height */
     object-fit: cover;
     border: 4px solid white;
     cursor: pointer;
     border-radius: 8px;
-    transition: transform 0.2s;
+    transition: transform 0.2s, border-color 0.2s;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
 .wallpaper-option:hover {
     transform: scale(1.05);
+    border-color: yellow; /* Highlight on hover */
 }
+
 
 /* Game Area - Kahoot Style */
 .game-layout {
