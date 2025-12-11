@@ -74,27 +74,33 @@ body, html {
 }
 
 .option {
-    background-color: white;
+    position: relative;
+    top: 30px;
+    background-color: transparent; /* No background */
     border: none;
-    font-weight: 700;
-    color: #333;
-    padding: 20px 40px;
-    margin: 10px;
-    font-size: 24px;
+    font-weight: 900; /* Extra bold */
+    color: #fff; /* White text */
+    padding: 10px 20px;
+    margin: 15px;
+    font-size: 40px; /* Larger font */
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    width: 400px;
-    border-radius: 4px;
-    box-shadow: 0 4px 0 #bbb;
+    transition: transform 0.3s ease, text-shadow 0.3s ease, color 0.3s ease;
+    width: auto; /* Auto width */
+    text-transform: uppercase;
+    text-shadow: 3px 3px 0px rgba(0,0,0,0.5); /* Strong shadow for depth */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 2px;
 }
 
 .option:active {
-    transform: translateY(4px);
-    box-shadow: none;
+    transform: scale(0.95);
 }
 
 .option:hover {
-    background-color: #f0f0f0;
+    background-color: transparent;
+    transform: scale(1.1); /* Grow on hover */
+    color: #ffeb3b; /* Yellow on hover */
+    text-shadow: 0 0 20px rgba(255, 235, 59, 0.8), 3px 3px 0px rgba(0,0,0,0.8); /* Glow effect */
 }
 
 /* Inputs */
