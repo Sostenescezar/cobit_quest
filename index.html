@@ -8,15 +8,60 @@
 </head>
 <body>
     <div class="container">
-        <div class="menu">
+        <!-- Main Menu -->
+        <div id="main-menu" class="menu">
             <h1 class="title">COBIT QUEST</h1>
             <div class="options">
-                <button class="option">Novo Game</button>
+                <button id="btn-new-game" class="option">Novo Game</button>
                 <button class="option">Jogo Carregado</button>
                 <button class="option">Opções</button>
                 <button class="option">Créditos</button>
             </div>
         </div>
+
+        <!-- Team Name Selection -->
+        <div id="team-setup" class="menu hidden">
+            <h2>Nomes das Equipes</h2>
+            <div class="input-group">
+                <input type="text" id="team1-name" placeholder="Nome da Equipe 1">
+            </div>
+            <div class="input-group">
+                <input type="text" id="team2-name" placeholder="Nome da Equipe 2">
+            </div>
+            <button id="btn-confirm-names" class="option">Continuar</button>
+        </div>
+
+        <!-- Wallpaper Selection -->
+        <div id="wallpaper-selection" class="menu hidden">
+            <h2 id="wallpaper-title">Escolha o Papel de Parede - Equipe 1</h2>
+            <div class="wallpapers" id="wallpaper-list">
+                <!-- Images will be injected here by JS -->
+            </div>
+        </div>
+
+        <!-- Game Area -->
+        <div id="game-area" class="menu hidden">
+            <div class="header">
+                <div id="team1-score-display">Equipe 1: 0</div>
+                <div id="turn-indicator">Vez de: Equipe 1</div>
+                <div id="team2-score-display">Equipe 2: 0</div>
+            </div>
+            <div class="question-container">
+                <h3 id="question-text">Pergunta aqui...</h3>
+                <div id="answers-container" class="options">
+                    <!-- Answers buttons -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Game Over Screen -->
+        <div id="game-over" class="menu hidden">
+             <h1 class="title">Fim de Jogo!</h1>
+             <h2 id="winner-text"></h2>
+             <button id="btn-restart" class="option">Voltar ao Menu</button>
+        </div>
+
     </div>
+    <script src="js/script.js"></script>
 </body>
 </html>

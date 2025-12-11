@@ -57,8 +57,8 @@ body, html {
 }
 
 .option {
-    background-color: transparent;
-    border: none;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for readability */
+    border: 2px solid white;
     font-weight: 900;
     color: white;
     padding: 15px 30px;
@@ -68,4 +68,91 @@ body, html {
     cursor: pointer;
     transition: all 0.3s ease;
     width: 400px;
+}
+
+.option:hover {
+    background-color: white;
+    color: #322222;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Team Setup Styles */
+.input-group {
+    margin: 20px 0;
+}
+
+input[type="text"] {
+    padding: 15px;
+    font-size: 20px;
+    border-radius: 5px;
+    border: none;
+    width: 300px;
+    text-align: center;
+}
+
+/* Wallpaper Selection Styles */
+.wallpapers {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+    max-width: 800px;
+}
+
+.wallpaper-option {
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
+    border: 3px solid transparent;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: transform 0.2s;
+}
+
+.wallpaper-option:hover {
+    transform: scale(1.1);
+    border-color: white;
+}
+
+/* Game Area Styles */
+.header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    min-width: 600px;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    background-color: rgba(0,0,0,0.6);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.question-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 800px;
+    width: 100%;
+}
+
+#question-text {
+    font-size: 28px;
+    margin-bottom: 25px;
+}
+
+#answers-container .option {
+    width: 100%;
+    background-color: #322222;
+    font-size: 20px;
+}
+
+#answers-container .option:hover {
+    background-color: #555;
+    color: white;
 }
