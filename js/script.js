@@ -1,5 +1,6 @@
 // State
 const gameState = {
+    mode: 'group',
     team1: { name: "", avatar: "", score: 0, logo: "" },
     team2: { name: "", avatar: "", score: 0, logo: "" },
     currentTurn: 1, // 1 or 2
@@ -197,16 +198,24 @@ function shuffle(array) {
 
 // DOM Elements
 const mainMenu = document.getElementById('main-menu');
+const modeSelection = document.getElementById('mode-selection');
 const teamSetup = document.getElementById('team-setup');
 const wallpaperSelection = document.getElementById('wallpaper-selection');
 const gameArea = document.getElementById('game-area');
 const gameOverScreen = document.getElementById('game-over');
 
 const btnNewGame = document.getElementById('btn-new-game');
+const btnModeSolo = document.getElementById('btn-mode-solo');
+const btnModeGroup = document.getElementById('btn-mode-group');
+const btnModeBack = document.getElementById('btn-mode-back');
 const btnConfirmNames = document.getElementById('btn-confirm-names');
 const btnRestart = document.getElementById('btn-restart');
 const wallpaperList = document.getElementById('wallpaper-list');
 const wallpaperTitle = document.getElementById('wallpaper-title');
+
+const team1SetupCol = document.getElementById('team1-setup-col');
+const team2SetupCol = document.getElementById('team2-setup-col');
+const vsSetupContainer = document.getElementById('vs-setup-container');
 
 const team1NameInput = document.getElementById('team1-name');
 const team2NameInput = document.getElementById('team2-name');
@@ -296,21 +305,52 @@ if (team2AvatarInput) {
 if (btnNewGame) {
     btnNewGame.addEventListener('click', () => {
         mainMenu.classList.add('hidden');
+        modeSelection.classList.remove('hidden');
+    });
+}
+
+if (btnModeSolo) {
+    btnModeSolo.addEventListener('click', () => {
+        gameState.mode = 'solo';
+        modeSelection.classList.add('hidden');
         teamSetup.classList.remove('hidden');
+        
+        // Hide Team 2 and VS elements
+        if (team2SetupCol) team2SetupCol.classList.add('hidden');
+        if (vsSetupContainer) vsSetupContainer.classList.add('hidden');
+    });
+}
+
+if (btnModeGroup) {
+    btnModeGroup.addEventListener('click', () => {
+        gameState.mode = 'group';
+        modeSelection.classList.add('hidden');
+        teamSetup.classList.remove('hidden');
+        
+        // Show Team 2 and VS elements
+        if (team2SetupCol) team2SetupCol.classList.remove('hidden');
+        if (vsSetupContainer) vsSetupContainer.classList.remove('hidden');
+    });
+}
+
+if (btnModeBack) {
+    btnModeBack.addEventListener('click', () => {
+        modeSelection.classList.add('hidden');
+        mainMenu.classList.remove('hidden');
     });
 }
 
 if (btnConfirmNames) {
     btnConfirmNames.addEventListener('click', () => {
         const t1Name = team1NameInput.value.trim() || "Equipe 1";
-        const t2Name = team2NameInput.value.trim() || "Equipe 2";
-        
         gameState.team1.name = t1Name;
-        gameState.team2.name = t2Name;
-        
-        // Save Logos (use default if not changed)
         gameState.team1.logo = team1Preview ? team1Preview.src : '';
-        gameState.team2.logo = team2Preview ? team2Preview.src : '';
+
+        if (gameState.mode === 'group') {
+            const t2Name = team2NameInput.value.trim() || "Equipe 2";
+            gameState.team2.name = t2Name;
+            gameState.team2.logo = team2Preview ? team2Preview.src : '';
+        }
         
         teamSetup.classList.add('hidden');
         startWallpaperSelection(1);
@@ -343,7 +383,13 @@ function startWallpaperSelection(teamNum) {
 function selectWallpaper(src) {
     if (gameState.selectingAvatarFor === 1) {
         gameState.team1.avatar = src;
-        startWallpaperSelection(2);
+        
+        if (gameState.mode === 'solo') {
+            wallpaperSelection.classList.add('hidden');
+            startGame();
+        } else {
+            startWallpaperSelection(2);
+        }
     } else {
         gameState.team2.avatar = src;
         wallpaperSelection.classList.add('hidden');
@@ -386,6 +432,9 @@ function startGame() {
     gameState.questionsAnswered = 0;
     gameState.currentTurn = 1; 
     
+    // Set max questions based on mode
+    gameState.maxQuestions = (gameState.mode === 'solo') ? 20 : 40;
+
     shuffle(questions);
     
     gameArea.classList.remove('hidden');
@@ -411,13 +460,28 @@ function updateUI(addedPoints = 0) {
     }
 
     if (team1ScoreText) team1ScoreText.innerText = t1Text;
-    if (team2ScoreText) team2ScoreText.innerText = t2Text;
+    
+    if (gameState.mode === 'solo') {
+        if (team2ScoreText) team2ScoreText.style.display = 'none';
+        if (team2AvatarDisplay) team2AvatarDisplay.style.display = 'none';
+        if (turnIndicator) turnIndicator.style.display = 'none'; // Hide turn indicator in solo mode
+    } else {
+        if (team2ScoreText) {
+            team2ScoreText.style.display = 'block'; // Reset
+            team2ScoreText.innerText = t2Text;
+        }
+        if (team2AvatarDisplay) {
+            team2AvatarDisplay.style.display = 'block'; // Reset
+            team2AvatarDisplay.src = gameState.team2.logo;
+        }
+        if (turnIndicator) {
+            turnIndicator.style.display = ''; // Show turn indicator in group mode
+            const currentName = gameState.currentTurn === 1 ? gameState.team1.name : gameState.team2.name;
+            turnIndicator.innerText = `Vez de: ${currentName}`;
+        }
+    }
     
     if (team1AvatarDisplay) team1AvatarDisplay.src = gameState.team1.logo;
-    if (team2AvatarDisplay) team2AvatarDisplay.src = gameState.team2.logo;
-    
-    const currentName = gameState.currentTurn === 1 ? gameState.team1.name : gameState.team2.name;
-    if (turnIndicator) turnIndicator.innerText = `Vez de: ${currentName}`;
     
     const currentAvatar = gameState.currentTurn === 1 ? gameState.team1.avatar : gameState.team2.avatar;
     if (container && currentAvatar) {
@@ -432,8 +496,13 @@ function loadQuestion() {
     }
 
     if (questionCounter) {
-        const teamQuestionsAnswered = Math.floor(gameState.questionsAnswered / 2) + 1;
-        questionCounter.innerText = `${teamQuestionsAnswered}/20`;
+        let currentQNum;
+        if (gameState.mode === 'solo') {
+            currentQNum = gameState.questionsAnswered + 1;
+        } else {
+            currentQNum = Math.floor(gameState.questionsAnswered / 2) + 1;
+        }
+        questionCounter.innerText = `${currentQNum}/20`;
     }
 
     clearInterval(gameState.timer);
@@ -511,7 +580,9 @@ function handleTimeOut() {
 
     setTimeout(() => {
         gameState.questionsAnswered++;
-        gameState.currentTurn = gameState.currentTurn === 1 ? 2 : 1;
+        if (gameState.mode === 'group') {
+            gameState.currentTurn = gameState.currentTurn === 1 ? 2 : 1;
+        }
         updateUI();
         loadQuestion();
     }, 4000);
@@ -577,7 +648,9 @@ function handleAnswer(clickedBtn, selectedIndex, correctIndex) {
     
     setTimeout(() => {
         gameState.questionsAnswered++;
-        gameState.currentTurn = gameState.currentTurn === 1 ? 2 : 1;
+        if (gameState.mode === 'group') {
+            gameState.currentTurn = gameState.currentTurn === 1 ? 2 : 1;
+        }
         updateUI(); 
         loadQuestion();
     }, 4000);
@@ -594,15 +667,20 @@ function endGame() {
     }
     
     let resultMsg = "";
-    if (gameState.team1.score > gameState.team2.score) {
-        resultMsg = `Vencedor: ${gameState.team1.name}!`;
-    } else if (gameState.team2.score > gameState.team1.score) {
-        resultMsg = `Vencedor: ${gameState.team2.name}!`;
+    if (gameState.mode === 'solo') {
+        resultMsg = `Fim de Jogo!\nSeu Placar: ${gameState.team1.name}: ${gameState.team1.score}`;
     } else {
-        resultMsg = "Empate!";
+        if (gameState.team1.score > gameState.team2.score) {
+            resultMsg = `Vencedor: ${gameState.team1.name}!`;
+        } else if (gameState.team2.score > gameState.team1.score) {
+            resultMsg = `Vencedor: ${gameState.team2.name}!`;
+        } else {
+            resultMsg = "Empate!";
+        }
+        resultMsg += `\nPlacar Final:\n${gameState.team1.name}: ${gameState.team1.score}\n${gameState.team2.name}: ${gameState.team2.score}`;
     }
     
     if (winnerText) {
-        winnerText.innerText = `${resultMsg}\nPlacar Final:\n${gameState.team1.name}: ${gameState.team1.score}\n${gameState.team2.name}: ${gameState.team2.score}`;
+        winnerText.innerText = resultMsg;
     }
 }

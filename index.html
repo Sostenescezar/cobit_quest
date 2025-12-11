@@ -18,25 +18,35 @@
             </div>
         </div>
 
+        <!-- Game Mode Selection -->
+        <div id="mode-selection" class="menu hidden">
+            <h2 class="title">Modo de Jogo</h2>
+            <div class="options">
+                <button id="btn-mode-solo" class="option">Solo</button>
+                <button id="btn-mode-group" class="option">Dupla / Grupo</button>
+                <button id="btn-mode-back" class="option">Voltar</button>
+            </div>
+        </div>
+
         <!-- Team Name Selection -->
         <div id="team-setup" class="menu hidden">
-            <h2 class="section-title">Nomes das Equipes</h2>
+            <h2 class="section-title">Configuração do Jogador/Equipe</h2>
             <div class="team-setup-container">
-                <div class="input-group team-col">
+                <div id="team1-setup-col" class="input-group team-col">
                     <div class="avatar-upload">
                         <label for="team1-avatar-input">
                             <img src="img/perfil.jpg" id="team1-preview" class="avatar-preview" alt="Avatar Equipe 1">
                         </label>
                         <input type="file" id="team1-avatar-input" accept="image/*" class="hidden-input">
                     </div>
-                    <input type="text" id="team1-name" placeholder="Nome da Equipe 1" class="team-input">
+                    <input type="text" id="team1-name" placeholder="Nome" class="team-input">
                 </div>
                 
-                <div class="vs-container">
+                <div id="vs-setup-container" class="vs-container">
                     <img src="img/VS.png" alt="VS" class="vs-image">
                 </div>
                 
-                <div class="input-group team-col">
+                <div id="team2-setup-col" class="input-group team-col">
                     <div class="avatar-upload">
                         <label for="team2-avatar-input">
                             <img src="img/perfil.jpg" id="team2-preview" class="avatar-preview" alt="Avatar Equipe 2">
