@@ -13,7 +13,7 @@ const gameState = {
 const wallpapers = [
     'img/budapeste.png',
     'img/chicago.png',
-    'img/londres.png',
+    'img/olindadofuturo.jpg',
     'img/los_angeles.png',
     'img/nova_iorque.png',
     'img/suíça.png'
