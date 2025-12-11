@@ -41,15 +41,19 @@
 
         <!-- Game Area -->
         <div id="game-area" class="menu hidden">
-            <div class="header">
-                <div id="team1-score-display">Equipe 1: 0</div>
-                <div id="turn-indicator">Vez de: Equipe 1</div>
-                <div id="team2-score-display">Equipe 2: 0</div>
-            </div>
-            <div class="question-container">
-                <h3 id="question-text">Pergunta aqui...</h3>
-                <div id="answers-container" class="options">
-                    <!-- Answers buttons -->
+            <div class="game-layout">
+                <div class="header">
+                    <div id="team1-score-display">Equipe 1: 0</div>
+                    <div id="turn-indicator" class="turn-badge">Vez de: Equipe 1</div>
+                    <div id="team2-score-display">Equipe 2: 0</div>
+                </div>
+                
+                <div class="question-box">
+                    <span id="question-text">Pergunta aqui...</span>
+                </div>
+                
+                <div id="answers-container" class="answers-grid">
+                    <!-- Answers buttons will be injected here -->
                 </div>
             </div>
         </div>
