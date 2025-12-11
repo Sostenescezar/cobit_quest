@@ -5,7 +5,9 @@ const gameState = {
     currentTurn: 1, // 1 or 2
     questionsAnswered: 0,
     maxQuestions: 40, // 20 per team
-    selectingAvatarFor: 1 // 1 or 2
+    selectingAvatarFor: 1, // 1 or 2
+    timer: null,
+    timeLeft: 60
 };
 
 const wallpapers = [
@@ -103,10 +105,10 @@ const feedbackOverlay = document.getElementById('feedback-overlay');
 const feedbackText = document.getElementById('feedback-text');
 const feedbackIcon = document.getElementById('feedback-icon');
 
+const timerDisplay = document.getElementById('timer-display');
 const container = document.querySelector('.container');
 
 // Init
-// Set initial background
 if (container) {
     container.style.backgroundImage = "url('img/olindadofuturo.jpg')";
 }
@@ -170,7 +172,6 @@ function startGame() {
     gameState.questionsAnswered = 0;
     gameState.currentTurn = 1; // Team 1 starts
     
-    // Shuffle pool
     shuffle(questions);
     
     gameArea.classList.remove('hidden');
@@ -184,7 +185,7 @@ function updateUI() {
     const currentName = gameState.currentTurn === 1 ? gameState.team1.name : gameState.team2.name;
     turnIndicator.innerText = `Vez de: ${currentName}`;
     
-    // Update background based on turn
+    // Update background
     const currentAvatar = gameState.currentTurn === 1 ? gameState.team1.avatar : gameState.team2.avatar;
     if (container && currentAvatar) {
         container.style.backgroundImage = `url('${currentAvatar}')`;
@@ -197,16 +198,30 @@ function loadQuestion() {
         return;
     }
 
+    // Reset Timer
+    clearInterval(gameState.timer);
+    gameState.timeLeft = 60;
+    if(timerDisplay) timerDisplay.innerText = gameState.timeLeft;
+    
+    // Start Timer
+    gameState.timer = setInterval(() => {
+        gameState.timeLeft--;
+        if(timerDisplay) timerDisplay.innerText = gameState.timeLeft;
+        
+        if (gameState.timeLeft <= 0) {
+            clearInterval(gameState.timer);
+            handleTimeOut();
+        }
+    }, 1000);
+
     const q = questions[gameState.questionsAnswered];
     questionText.innerText = q.q;
     
-    // Create answer buttons with indices to track correct one
     let answerIndices = [0, 1, 2, 3];
     shuffle(answerIndices);
     
     answersContainer.innerHTML = '';
     
-    // Kahoot colors and shapes
     const colorClasses = ['btn-red', 'btn-blue', 'btn-yellow', 'btn-green'];
     const shapeClasses = ['shape-triangle', 'shape-diamond', 'shape-circle', 'shape-square'];
     
@@ -214,11 +229,9 @@ function loadQuestion() {
         const btn = document.createElement('button');
         btn.classList.add('answer-btn', colorClasses[i]);
         
-        // Shape HTML
         const shape = document.createElement('div');
         shape.className = `shape ${shapeClasses[i]}`;
         
-        // Text Span
         const text = document.createElement('span');
         text.className = 'answer-text';
         text.innerText = q.a[index];
@@ -231,22 +244,44 @@ function loadQuestion() {
     });
 }
 
+function handleTimeOut() {
+    // Show timeout feedback
+    feedbackOverlay.classList.remove('hidden');
+    feedbackOverlay.classList.remove('feedback-correct');
+    feedbackOverlay.classList.add('feedback-wrong');
+    feedbackText.innerText = "Tempo Esgotado!";
+    feedbackIcon.innerText = "⏰";
+    
+    setTimeout(() => {
+        feedbackOverlay.classList.add('hidden');
+        gameState.questionsAnswered++;
+        gameState.currentTurn = gameState.currentTurn === 1 ? 2 : 1;
+        updateUI();
+        loadQuestion();
+    }, 2000);
+}
+
 function handleAnswer(selectedIndex, correctIndex) {
+    clearInterval(gameState.timer); // Stop timer immediately
+    
     const isCorrect = selectedIndex === correctIndex;
     
-    // Show Feedback Overlay
     feedbackOverlay.classList.remove('hidden');
     feedbackOverlay.classList.remove('feedback-correct', 'feedback-wrong');
     
     if (isCorrect) {
         feedbackOverlay.classList.add('feedback-correct');
-        feedbackText.innerText = "Correto!";
+        
+        // Calculate Score: Max 1000, proportional to time left
+        const points = Math.floor((gameState.timeLeft / 60) * 1000);
+        
+        feedbackText.innerText = `Correto! +${points}`;
         feedbackIcon.innerText = "✔";
         
         if (gameState.currentTurn === 1) {
-            gameState.team1.score += 100; // Kahoot style score
+            gameState.team1.score += points;
         } else {
-            gameState.team2.score += 100;
+            gameState.team2.score += points;
         }
     } else {
         feedbackOverlay.classList.add('feedback-wrong');
@@ -254,7 +289,6 @@ function handleAnswer(selectedIndex, correctIndex) {
         feedbackIcon.innerText = "✖";
     }
     
-    // Wait then proceed
     setTimeout(() => {
         feedbackOverlay.classList.add('hidden');
         gameState.questionsAnswered++;
@@ -265,6 +299,7 @@ function handleAnswer(selectedIndex, correctIndex) {
 }
 
 function endGame() {
+    clearInterval(gameState.timer);
     gameArea.classList.add('hidden');
     gameOverScreen.classList.remove('hidden');
     
@@ -277,5 +312,5 @@ function endGame() {
         resultMsg = "Empate!";
     }
     
-    winnerText.innerText = `${resultMsg}\nPlacar: ${gameState.team1.score} - ${gameState.team2.score}`;
+    winnerText.innerText = `${resultMsg}\nPlacar Final:\n${gameState.team1.name}: ${gameState.team1.score}\n${gameState.team2.name}: ${gameState.team2.score}`;
 }
