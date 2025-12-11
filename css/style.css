@@ -409,3 +409,80 @@ body, html {
     height: 28px;
     background-color: white;
 }
+
+/* VS Screen Styles */
+#vs-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: none; /* Override menu class */
+}
+
+#vs-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.vs-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    height: 100%;
+    align-items: center;
+}
+
+.vs-player {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    opacity: 0; /* Animate in? */
+    animation: fadeIn 1s forwards;
+    animation-delay: 0.5s;
+}
+
+.vs-player.right {
+    animation-delay: 1s; /* Second player comes in later */
+}
+
+.vs-player img {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    border: 8px solid white;
+    box-shadow: 0 0 30px rgba(0,0,0,0.8), 0 0 50px rgba(255,215,0,0.5);
+    background-color: #fff;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+.vs-player h2 {
+    font-size: 50px;
+    font-weight: 900;
+    color: white;
+    text-transform: uppercase;
+    text-shadow: 4px 4px 0px #000;
+    background: rgba(0,0,0,0.6);
+    padding: 10px 30px;
+    border-radius: 10px;
+    border: 2px solid rgba(255,255,255,0.3);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}

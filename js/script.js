@@ -111,6 +111,14 @@ const team2AvatarInput = document.getElementById('team2-avatar-input');
 const team1Preview = document.getElementById('team1-preview');
 const team2Preview = document.getElementById('team2-preview');
 
+// VS Screen Elements
+const vsScreen = document.getElementById('vs-screen');
+const vsVideo = document.getElementById('vs-video');
+const vsTeam1Avatar = document.getElementById('vs-team1-avatar');
+const vsTeam1Name = document.getElementById('vs-team1-name');
+const vsTeam2Avatar = document.getElementById('vs-team2-avatar');
+const vsTeam2Name = document.getElementById('vs-team2-name');
+
 const timerDisplay = document.getElementById('timer-display');
 const container = document.querySelector('.container');
 
@@ -192,6 +200,36 @@ function selectWallpaper(src) {
     } else {
         gameState.team2.avatar = src;
         wallpaperSelection.classList.add('hidden');
+        showVsScreen();
+    }
+}
+
+function showVsScreen() {
+    if (vsScreen) {
+        vsScreen.classList.remove('hidden');
+        
+        if (vsTeam1Name) vsTeam1Name.innerText = gameState.team1.name;
+        if (vsTeam1Avatar) vsTeam1Avatar.src = gameState.team1.logo;
+        
+        if (vsTeam2Name) vsTeam2Name.innerText = gameState.team2.name;
+        if (vsTeam2Avatar) vsTeam2Avatar.src = gameState.team2.logo;
+        
+        if (vsVideo) {
+            vsVideo.currentTime = 0;
+            vsVideo.play().catch(e => console.error("Video play failed", e));
+            
+            vsVideo.onended = () => {
+                vsScreen.classList.add('hidden');
+                startGame();
+            };
+        } else {
+            // Fallback if video element missing
+            setTimeout(() => {
+                vsScreen.classList.add('hidden');
+                startGame();
+            }, 3000);
+        }
+    } else {
         startGame();
     }
 }
