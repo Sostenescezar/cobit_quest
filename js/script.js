@@ -213,12 +213,33 @@ const btnRestart = document.getElementById('btn-restart');
 const wallpaperList = document.getElementById('wallpaper-list');
 const wallpaperTitle = document.getElementById('wallpaper-title');
 
+// Credits Elements
+const creditsScreen = document.getElementById('credits-screen');
+const btnCredits = document.getElementById('btn-credits');
+const btnCreditsBack = document.getElementById('btn-credits-back');
+
 const team1SetupCol = document.getElementById('team1-setup-col');
 const team2SetupCol = document.getElementById('team2-setup-col');
 const vsSetupContainer = document.getElementById('vs-setup-container');
 
 const team1NameInput = document.getElementById('team1-name');
 const team2NameInput = document.getElementById('team2-name');
+
+// ... (existing code)
+
+if (btnCredits) {
+    btnCredits.addEventListener('click', () => {
+        mainMenu.classList.add('hidden');
+        creditsScreen.classList.remove('hidden');
+    });
+}
+
+if (btnCreditsBack) {
+    btnCreditsBack.addEventListener('click', () => {
+        creditsScreen.classList.add('hidden');
+        mainMenu.classList.remove('hidden');
+    });
+}
 
 const team1ScoreText = document.getElementById('team1-score-text');
 const team2ScoreText = document.getElementById('team2-score-text');

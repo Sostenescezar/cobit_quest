@@ -14,7 +14,7 @@
             <div class="options">
                 <button id="btn-new-game" class="option">Novo Game</button>
                 <button id="btn-options" class="option">Opções</button>
-                <button class="option">Créditos</button>
+                <button id="btn-credits" class="option">Créditos</button>
             </div>
         </div>
 
@@ -145,6 +145,31 @@
         <audio id="bg-music" loop>
             <source src="audio/audio.mp4" type="audio/mp4">
         </audio>
+
+        <!-- Credits Screen -->
+        <div id="credits-screen" class="credits-overlay hidden">
+            <button id="btn-credits-back" class="close-credits-btn">Voltar</button>
+            <div class="credits-scroll">
+                <img src="img/Uninassau.png" alt="UNINASSAU Logo" class="credits-logo">
+                
+                <div class="credit-block">
+                    <h2>Professora</h2>
+                    <p>Nome da Professora</p>
+                </div>
+
+                <div class="credit-block">
+                    <h2>Alunos</h2>
+                    <p>Nome do Aluno 1</p>
+                    <p>Nome do Aluno 2</p>
+                    <p>Nome do Aluno 3</p>
+                </div>
+
+                <div class="credit-block">
+                    <h2>Colaborador Externo</h2>
+                    <p>Nome do Colaborador</p>
+                </div>
+            </div>
+        </div>
 
     </div>
     <script src="js/script.js"></script>

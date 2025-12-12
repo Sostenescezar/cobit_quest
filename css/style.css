@@ -7,6 +7,7 @@
 body, html {
     height: 100%;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
+    overflow: hidden; /* Prevent body scroll */
 }
 
 .container {
@@ -133,6 +134,7 @@ body, html {
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
+    border: 4px solid white;
     cursor: pointer;
     transition: transform 0.2s, border-color 0.2s;
     background-color: #fff;
@@ -236,6 +238,7 @@ body, html {
     height: 60px;
     border-radius: 50%;
     object-fit: cover;
+    border: 2px solid white;
 }
 
 .center-info {
@@ -461,6 +464,7 @@ body, html {
     width: 300px;
     height: 300px;
     border-radius: 50%;
+    border: 8px solid white;
     box-shadow: 0 0 30px rgba(0,0,0,0.8), 0 0 50px rgba(255,215,0,0.5);
     background-color: #fff;
     object-fit: cover;
@@ -558,4 +562,85 @@ input:checked + .slider:before {
 
 .slider.round:before {
     border-radius: 50%;
+}
+
+/* Credits Screen Styles */
+.credits-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    z-index: 200;
+    display: flex;
+    justify-content: center;
+    overflow: hidden; /* Hide overflowing text */
+}
+
+.credits-scroll {
+    position: absolute;
+    bottom: -100%; /* Start below screen */
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+    color: #ffeb3b; /* Star Wars yellow ish */
+    animation: scrollUp 20s linear infinite; /* Adjust time for speed */
+}
+
+.credits-logo {
+    width: 300px;
+    height: auto;
+    margin-bottom: 60px;
+}
+
+.credit-block {
+    margin-bottom: 80px;
+}
+
+.credit-block h2 {
+    font-size: 40px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    color: white;
+    letter-spacing: 2px;
+}
+
+.credit-block p {
+    font-size: 32px;
+    margin: 5px 0;
+    font-weight: bold;
+}
+
+.close-credits-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    z-index: 210; /* Above text */
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    font-size: 20px;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.close-credits-btn:hover {
+    background: white;
+    color: black;
+}
+
+@keyframes scrollUp {
+    0% {
+        top: 100%;
+        transform: translateY(0);
+    }
+    100% {
+        top: -150%; /* Go way above */
+        transform: translateY(0);
+    }
 }
