@@ -580,18 +580,32 @@ input:checked + .slider:before {
 
 .credits-scroll {
     position: absolute;
-    bottom: -100%; /* Start below screen */
+    top: 100%; /* Start below screen */
     width: 100%;
     max-width: 800px;
     text-align: center;
     color: #ffeb3b; /* Star Wars yellow ish */
-    animation: scrollUp 20s linear infinite; /* Adjust time for speed */
+    animation: scrollUp 25s linear forwards; /* Run once and stop */
+    padding-bottom: 50px; /* Some padding at the end */
+}
+
+.credits-header {
+    margin-bottom: 100px; /* Spacing between logo section and first credit */
 }
 
 .credits-logo {
     width: 300px;
     height: auto;
-    margin-bottom: 60px;
+    margin-bottom: 20px; /* Reduced margin */
+}
+
+.credits-main-title {
+    font-size: 60px;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: white;
+    letter-spacing: 5px;
+    margin-top: 0;
 }
 
 .credit-block {
@@ -610,6 +624,16 @@ input:checked + .slider:before {
     font-size: 32px;
     margin: 5px 0;
     font-weight: bold;
+}
+
+.end-message {
+    margin-top: 500px; /* Adjust this value to fine-tune the final position */
+}
+
+.end-message h2 {
+    font-size: 50px;
+    color: #ffeb3b;
+    text-shadow: 0 0 10px rgba(255, 235, 59, 0.5);
 }
 
 .close-credits-btn {
@@ -636,11 +660,9 @@ input:checked + .slider:before {
 
 @keyframes scrollUp {
     0% {
-        top: 100%;
         transform: translateY(0);
     }
     100% {
-        top: -150%; /* Go way above */
-        transform: translateY(0);
+        transform: translateY(calc(-100% - 50vh)); /* Move until bottom is at center */
     }
 }
